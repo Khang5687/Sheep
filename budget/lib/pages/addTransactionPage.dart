@@ -2020,18 +2020,19 @@ class _AddTransactionPageState extends State<AddTransactionPage>
       ),
     );
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.transaction != null) {
           discardChangesPopup(
             context,
-            previousObject: await addDefaultMissingValues(widget.transaction!),
-            currentObject: await createTransaction(),
+            previousObject: transactionInitial,
+            currentObject: createTransaction(),
           );
         } else {
           showDiscardChangesPopupIfNotEditing();
         }
-        return false;
       },
       child: PageFramework(
         belowAppBarPaddingWhenCenteredTitleSmall: 0,

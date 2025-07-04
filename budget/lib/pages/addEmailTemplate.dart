@@ -391,8 +391,10 @@ class _AddEmailTemplateState extends State<AddEmailTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.scannerTemplate != null) {
           discardChangesPopup(
             context,
@@ -402,7 +404,6 @@ class _AddEmailTemplateState extends State<AddEmailTemplate> {
         } else {
           discardChangesPopup(context);
         }
-        return false;
       },
       child: PageFramework(
         staticOverlay: Align(

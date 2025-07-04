@@ -260,14 +260,15 @@ class _BudgetPageContentState extends State<_BudgetPageContent> {
         ? startDateString
         : startDateString + " – " + endDateString;
     bool showingSelectedPeriodAppBar = widget.openedFromHistory == true;
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if ((globalSelectedID.value[pageId] ?? []).length > 0) {
           globalSelectedID.value[pageId] = [];
           globalSelectedID.notifyListeners();
-          return false;
         } else {
-          return true;
+          Navigator.pop(context);
         }
       },
       child: PageFramework(

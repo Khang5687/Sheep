@@ -118,7 +118,7 @@ class App extends StatelessWidget {
       darkTheme: getDarkTheme(),
       scrollBehavior: ScrollBehaviorOverride(),
       themeMode: getSettingConstants(appStateSettings)["theme"],
-      home: HandleWillPopScope(
+      home: HandlePopScope(
         child: Stack(
           children: [
             Row(

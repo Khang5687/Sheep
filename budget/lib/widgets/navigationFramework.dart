@@ -216,17 +216,16 @@ class PageNavigationFrameworkSafeArea extends StatelessWidget {
   }
 }
 
-class HandleWillPopScope extends StatelessWidget {
-  const HandleWillPopScope({required this.child, super.key});
+class HandlePopScope extends StatelessWidget {
+  const HandlePopScope({required this.child, super.key});
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: child,
-      onWillPop: () async {
-        bool popResult = await maybePopRoute(navigatorKey.currentContext);
-        if (popResult == true) return false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) return;
 
         // Deselect selected transactions
         int notEmpty = 0;
@@ -236,21 +235,24 @@ class HandleWillPopScope extends StatelessWidget {
         }
         globalSelectedID.notifyListeners();
 
-        // Allow the back button to exit the app when on home
-        if (notEmpty <= 0) {
-          if (pageNavigationFrameworkKey.currentState?.currentPage == 0) {
-            return true;
-          } else {
-            // Allow back button deselect a selected category first on All Spending page
-            if (pageNavigationFrameworkKey.currentState?.currentPage == 7 &&
-                categoryIsSelectedOnAllSpending) {
-              return true;
-            }
-            pageNavigationFrameworkKey.currentState?.changePage(0);
-          }
+        if (notEmpty > 0) {
+          return;
         }
-        return false;
+
+        // Allow the back button to exit the app when on home
+        if (pageNavigationFrameworkKey.currentState?.currentPage == 0) {
+          SystemNavigator.pop();
+        } else {
+          // Allow back button deselect a selected category first on All Spending page
+          if (pageNavigationFrameworkKey.currentState?.currentPage == 7 &&
+              categoryIsSelectedOnAllSpending) {
+            SystemNavigator.pop();
+            return;
+          }
+          pageNavigationFrameworkKey.currentState?.changePage(0);
+        }
       },
+      child: child,
     );
   }
 }

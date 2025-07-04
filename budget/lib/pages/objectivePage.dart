@@ -183,14 +183,15 @@ class _ObjectivePageContentState extends State<_ObjectivePageContent> {
                     amount: 0.92)
                 : null;
     String pageId = widget.objective.objectivePk;
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if ((globalSelectedID.value[pageId] ?? []).length > 0) {
           globalSelectedID.value[pageId] = [];
           globalSelectedID.notifyListeners();
-          return false;
         } else {
-          return true;
+          Navigator.pop(context);
         }
       },
       child: Stack(

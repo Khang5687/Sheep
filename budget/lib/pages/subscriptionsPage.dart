@@ -54,14 +54,15 @@ class SubscriptionsPageState extends State<SubscriptionsPage> {
   Widget build(BuildContext context) {
     String pageId = "Subscriptions";
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if ((globalSelectedID.value[pageId] ?? []).length > 0) {
           globalSelectedID.value[pageId] = [];
           globalSelectedID.notifyListeners();
-          return false;
         } else {
-          return true;
+          Navigator.pop(context);
         }
       },
       child: PageFramework(

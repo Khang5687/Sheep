@@ -61,15 +61,16 @@ class _EditWalletsPageState extends State<EditWalletsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (searchValue != "") {
           setState(() {
             searchValue = "";
           });
-          return false;
         } else {
-          return true;
+          Navigator.pop(context);
         }
       },
       child: PageFramework(

@@ -1192,8 +1192,10 @@ class _BudgetSpenderSummaryState extends State<BudgetSpenderSummary> {
 
           for (BudgetSpender spender in budgetSpenderList) {
             memberWidgets.add(
-              WillPopScope(
-                onWillPop: () async {
+              PopScope(
+                canPop: false,
+                onPopInvoked: (didPop) async {
+                  if (didPop) return;
                   if (widget.disableMemberSelection == false) {
                     if (selectedMember == spender.member ||
                         spender.amount == 0) {
@@ -1201,10 +1203,12 @@ class _BudgetSpenderSummaryState extends State<BudgetSpenderSummary> {
                       setState(() {
                         selectedMember = null;
                       });
-                      return false;
+                    } else {
+                      Navigator.pop(context);
                     }
+                  } else {
+                    Navigator.pop(context);
                   }
-                  return true;
                 },
                 child: Tappable(
                   onTap: () {

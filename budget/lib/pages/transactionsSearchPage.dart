@@ -157,14 +157,15 @@ class TransactionsSearchPageState extends State<TransactionsSearchPage>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if ((globalSelectedID.value["TransactionsSearch"] ?? []).length > 0) {
           globalSelectedID.value["TransactionsSearch"] = [];
           globalSelectedID.notifyListeners();
-          return false;
         } else {
-          return true;
+          Navigator.pop(context);
         }
       },
       child: PageFramework(

@@ -421,11 +421,13 @@ class _EditHomePageState extends State<EditHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         // We need to refresh the home page when this route is popped
         homePageStateKey.currentState?.refreshState();
-        return true;
+        Navigator.pop(context);
       },
       child: PageFramework(
         horizontalPaddingConstrained: true,

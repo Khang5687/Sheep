@@ -918,17 +918,19 @@ class _AddBillItemPageState extends State<AddBillItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.billSplitterItem == null ||
             billSplitterItem.toJson().toString() !=
                 widget.billSplitterItem!.toJson().toString() ||
             jsonEncode(selectedSplitPersons) !=
                 jsonEncode(billSplitterItem.userAmounts)) {
           discardChangesPopup(context, forceShow: true);
-          return false;
+        } else {
+          Navigator.pop(context);
         }
-        return true;
       },
       child: PageFramework(
         title: widget.billSplitterItem == null

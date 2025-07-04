@@ -391,8 +391,10 @@ class _AddObjectivePageState extends State<AddObjectivePage>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.objective != null) {
           discardChangesPopup(
             context,
@@ -402,7 +404,6 @@ class _AddObjectivePageState extends State<AddObjectivePage>
         } else {
           showDiscardChangesPopupIfNotEditing();
         }
-        return false;
       },
       child: PageFramework(
         horizontalPaddingConstrained: true,

@@ -150,14 +150,15 @@ class ActivityPageState extends State<ActivityPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if ((globalSelectedID.value[pageId] ?? []).length > 0) {
           globalSelectedID.value[pageId] = [];
           globalSelectedID.notifyListeners();
-          return false;
         } else {
-          return true;
+          Navigator.pop(context);
         }
       },
       child: PageFramework(

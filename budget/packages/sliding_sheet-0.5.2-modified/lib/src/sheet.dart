@@ -899,21 +899,20 @@ class _SlidingSheetState extends State<SlidingSheet>
       return result;
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: isDialog
+          ? widget.isDismissable
+          : state.isCollapsed,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+
         if (isDialog) {
           if (!widget.isDismissable) {
             _onDismissPrevented(backButton: true);
-            return false;
-          } else {
-            return true;
           }
         } else {
           if (!state.isCollapsed) {
             snapToExtent(minExtent);
-            return false;
-          } else {
-            return true;
           }
         }
       },

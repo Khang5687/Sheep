@@ -581,14 +581,15 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
         : budgetAmountToPrimaryCurrency(
             Provider.of<AllWallets>(context, listen: true), widget.budget!);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.budget != null) {
           discardChangesPopupIfBudgetPassed();
         } else {
           showDiscardChangesPopupIfNotEditing();
         }
-        return false;
       },
       child: PageFramework(
         resizeToAvoidBottomInset: true,

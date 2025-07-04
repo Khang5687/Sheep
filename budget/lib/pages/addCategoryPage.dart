@@ -357,8 +357,10 @@ class _AddCategoryPageState extends State<AddCategoryPage>
         ],
       ),
     );
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.category != null) {
           discardChangesPopup(context,
               previousObject: widget.category!,
@@ -366,7 +368,6 @@ class _AddCategoryPageState extends State<AddCategoryPage>
         } else {
           showDiscardChangesPopupIfNotEditing();
         }
-        return false;
       },
       child: PageFramework(
         dragDownToDismissEnabled: dragDownToDismissEnabled,

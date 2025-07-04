@@ -344,8 +344,10 @@ class _AddWalletPageState extends State<AddWalletPage> {
       ));
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         if (widget.wallet != null) {
           discardChangesPopup(
             context,
@@ -355,7 +357,6 @@ class _AddWalletPageState extends State<AddWalletPage> {
         } else {
           showDiscardChangesPopupIfNotEditing();
         }
-        return false;
       },
       child: PageFramework(
         resizeToAvoidBottomInset: true,
