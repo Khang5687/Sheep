@@ -56,3 +56,6 @@ keystore.jks
 
 /.firebase
 .firebase/
+
+# Documentation related
+*.md
